@@ -19,7 +19,7 @@ func (cells ByBuildWeigth) Less(i, j int) bool {
 
 func main() {
 	fmt.Println()
-	inputPath, _ := checkArgs()
+	inputPath, output := checkArgs()
 
 	//parse input
 	fmt.Println("----- Parsing input -----")
@@ -140,10 +140,11 @@ func main() {
 	}
 
 	//connetterli
-
+	omg := magic(input, cells)
 	//write output
 	fmt.Println("\n----- Writing output -----")
-	//writeOutput( output )
+
+	writeOutput(omg, output)
 
 	fmt.Println()
 }
