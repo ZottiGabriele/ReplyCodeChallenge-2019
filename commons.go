@@ -62,11 +62,10 @@ func findPath(costumer Costumer, cell Cell) string {
 	move := costumer
 
 	// vedo posizione costumer rispetto all'ufficio e mi muovo
-
 	if costumer.x < cell.office.x {
 
 		for move.x <= cell.office.x {
-			out := append(out, 'R')
+			out := out + "R"
 			(move.x)++
 		}
 
@@ -74,19 +73,18 @@ func findPath(costumer Costumer, cell Cell) string {
 
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'D')
+				out := out + "D"
 			}
 		} else if costumer.y > cell.office.y {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'U')
-			}
+				out := out + "U"
 		}
 
 	} else if costumer.x > cell.office.x {
 
 		for move.x <= cell.office.x {
-			out := append(out, 'L')
+			out := out + "L"
 			(move.x)++
 		}
 
@@ -94,12 +92,12 @@ func findPath(costumer Costumer, cell Cell) string {
 
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'D')
+				out := out + "D"
 			}
 		} else if costumer.y > cell.office.y {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'U')
+				out := out + "U"
 			}
 		}
 
@@ -109,28 +107,72 @@ func findPath(costumer Costumer, cell Cell) string {
 
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'D')
+				out := out + "D"
 			}
 		} else if costumer.y > cell.office.y {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := append(out, 'U')
+				out := out +"U"
 			}
 		}
 	}
 }
 
-func searchCell_ofCostumer(costumer Costumer, cell [][]Cell) (Costumer, Cell) {
+func searchCellofCostumer(costumer Costumer, cell [][]Cell, width int, height int) (Costumer, Cell){
 
 	posCol := floor(costumer.x / cell.width)
 	posRow := floor(costumer.y / cell.height)
 
-	return costumer, cell[posRow][posCol]
+	if cell.office.x != -1 && cell.office.y != -1 {
+		return costumer, cell[posRow][posCol]
+
+	} else {
+
+		if posRow == 0 && posCol == 0 {
+			 
+			if cell[posRow+1][posCol].buildWeight < cell[posRow][posCol+1].buildWeight {
+				temp := cell[posRow+1][posCol]
+			} else {
+				temp := cell[posRow][posCol+1]
+			}
+			if temp.buildWeight > cell[posRow+1][posCol+1] {
+				temp := cell[posRow+1][posCol+1]
+			}
+
+		} else if posRow == 0 && posCol == width-1 {
+
+			if cell[posRow+1][posCol].buildWeight < cell[posRow][posCol-1].buildWeight {
+				temp := cell[posRow+1][posCol]
+			} else {
+				temp := cell[posRow][posCol-1]
+			}
+			if temp.buildWeight > cell[posRow+1][posCol-1] {
+				temp := cell[posRow+1][posCol-1]
+			}
+
+
+		} else if posRow == height -1 && posCol == 0 {
+
+			if cell[posRow-1][posCol].buildWeight < cell[posRow][posCol+1].buildWeight {
+				temp := cell[posRow-1][posCol]
+			} else {
+				temp := cell[posRow][posCol+1]
+			}
+			if temp.buildWeight > cell[posRow-1][posCol+1] {
+				temp := cell[posRow-1][posCol+1]
+			}
+
+		} 
+	}
+
 }
 
-func magic(Input input, cell [][]Cell) Path {
+func magic(input Input, cell [][]Cell) Path{
 
-	var arrPath []Path
+	arrPath := make(Path, len(input.costumers))
+
+	width := input.mappa.width
+	height := input.mappa.height
 
 	for i, costumer := range input.costumers {
 
@@ -138,8 +180,11 @@ func magic(Input input, cell [][]Cell) Path {
 		out.start_x = costumer.x
 		out.start_y = costumer.y
 
-		my_cell := searchCell_ofCostumer(costumer, cell)
+		my_cell := searchCell_ofCostumer(costumer, cell, width, height)
 		out.directions = findPath(costumer, my_cell)
 
+		arrPath[i] = out
 	}
+
+	return arrPath
 }
