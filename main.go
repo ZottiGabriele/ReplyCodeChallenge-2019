@@ -2,8 +2,20 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
+	"sort"
 )
+
+type ByBuildWeigth []Cell
+
+func (cells ByBuildWeigth) Len() int { return len(cells) }
+func (cells ByBuildWeigth) Swap(i, j int) {
+	cells[i], cells[j] = cells[j], cells[i]
+}
+func (cells ByBuildWeigth) Less(i, j int) bool {
+	return cells[i].buildWeight > cells[j].buildWeight
+}
 
 func main() {
 	fmt.Println()
@@ -55,6 +67,9 @@ func main() {
 			cells[i][j] = Cell{
 				start_x: (input.mappa.widht / div) * j,
 				start_y: (input.mappa.height / div) * i,
+				office:  Office{-1, -1},
+				world_x: j,
+				world_y: i,
 			}
 			//compute width
 			if j == div-1 {
@@ -96,18 +111,33 @@ func main() {
 		}
 	}
 
-	for i := 0; i < len(cells); i++ {
-		fmt.Println(cells[i])
-	}
-
 	//generare x punti casuauli all'interno delle celle con indice di bontà minore
 
 	//scegliere il migliore
-	orderedCells := cells
+	orderedCells := make([]Cell, div*div)
+	k := 0
+	for i := 0; i < len(cells); i++ {
+		for j := 0; j < len(cells); j++ {
+			orderedCells[k] = cells[i][j]
+			k++
+		}
+	}
 
-	fmt.Printf("\n\n%p %p\n\n", orderedCells, cells)
+	sort.Sort(ByBuildWeigth(orderedCells))
 
-	type ByBuildWeigth [][]Cell
+	for i := 0; i < input.mappa.n_max_office && orderedCells[i].buildWeight != 0; i++ {
+		x := rand.Intn(orderedCells[i].width) + orderedCells[i].start_x
+		y := rand.Intn(orderedCells[i].height) + orderedCells[i].start_y
+
+		cells[orderedCells[i].world_y][orderedCells[i].world_x].office = Office{
+			x: x,
+			y: y,
+		}
+	}
+
+	for i := 0; i < len(cells); i++ {
+		fmt.Println(cells[i])
+	}
 
 	//connetterli
 

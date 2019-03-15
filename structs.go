@@ -17,6 +17,9 @@ type Cell struct {
 	buildWeight int
 	pathWeight  int
 	office      Office
+
+	world_x int
+	world_y int
 }
 
 type Costumer struct {
