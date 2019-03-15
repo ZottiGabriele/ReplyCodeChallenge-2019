@@ -21,7 +21,7 @@ func main() {
 	width, height := input.mappa.widht, input.mappa.height
 	count := 1
 	for ; count < input.mappa.n_max_office; count *= 2 {
-
+		if(width > height)
 	}
 
 	//calcolare indice di bontà iniziale

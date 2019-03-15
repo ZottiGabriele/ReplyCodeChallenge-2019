@@ -16,6 +16,7 @@ type Cell struct {
 	height      int
 	buildWeight int
 	pathWeight  int
+	office      Office
 }
 
 type Costumer struct {
