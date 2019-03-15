@@ -8,12 +8,46 @@ import (
 func parseInput(filePath string) /*return type if needed*/ {
 	file, err := os.Open(filePath)
 	check(err)
-	fmt.Println(file, err) //DELETE AFTER ARGUMENTS USAGE
+	//fmt.Println(file, err) //DELETE AFTER ARGUMENTS USAGE
 
-	N := 0
-	_, err = fmt.Fscanf(file, "%d", &N)
+	_mappa := Mappa{0, 0, 0, 0, [][]byte{}}
+
+	_, err = fmt.Fscanf(file, "%d %d %d %d\n", &_mappa.widht, &_mappa.height, &_mappa.n_costumer, &_mappa.n_max_office)
 	check(err)
 
+	for i := 0; i < _mappa.height; i++ {
+		row := make([]byte, _mappa.widht)
+		_mappa.raw = append(_mappa.raw, row)
+
+	}
+
+	_costumers := make([]Costumer, _mappa.n_costumer)
+
+	// per ogni riga ho un customer
+	for i := 0; i < _mappa.n_costumer; i = i + 1 {
+
+		current := Costumer{}
+		_, err = fmt.Fscanf(file, "%d %d %d\n", &current.x, &current.y, &current.points)
+		_costumers[i] = current
+
+		_mappa.raw[_costumers[i].y][_costumers[i].x] = 'C'
+	}
+
+	for i := 0; i < _mappa.widht; i++ {
+		for j := 0; j < _mappa.height; j++ {
+
+		}
+	}
+	/*
+		for i := 0; i < _mappa.height; i++ {
+			for j := 0; j < _mappa.widht; j++ {
+				fmt.Print(_mappa.raw[i][j])
+			}
+			fmt.Println()
+		}
+	*/
+
+	fmt.Println(_costumers)
 	// out := PhotoCollection{n_of_photos: N}
 	// out.photos = make([]Photo, N)
 
