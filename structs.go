@@ -9,10 +9,25 @@ type Mappa struct {
 	raw [][]byte
 }
 
+type Cell struct {
+	start_x     int
+	start_y     int
+	width       int
+	height      int
+	buildWeight int
+	pathWeight  int
+}
+
 type Costumer struct {
-	x      int // colonne
-	y      int // righe
-	points int
+	x         int // colonne
+	y         int // righe
+	points    int
+	connected bool
+}
+
+type Office struct {
+	x int // colonne
+	y int // righe
 }
 
 type Path struct {
