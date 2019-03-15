@@ -10,10 +10,14 @@ func main() {
 	input, output := checkArgs()
 
 	//parse input
+	fmt.Println("----- Parsing input -----")
 	parseInput(input)
+
 	//process input
+	fmt.Println("\n----- Processing input -----")
 
 	//write output
+	fmt.Println("\n----- Writing output -----")
 	writeOutput(output)
 
 	fmt.Println()
