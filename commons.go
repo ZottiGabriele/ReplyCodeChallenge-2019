@@ -65,7 +65,7 @@ func findPath(costumer Costumer, cell Cell) string {
 	if costumer.x < cell.office.x {
 
 		for move.x <= cell.office.x {
-			out := out + "R"
+			out = out + "R"
 			(move.x)++
 		}
 
@@ -73,18 +73,18 @@ func findPath(costumer Costumer, cell Cell) string {
 
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := out + "D"
+				out = out + "D"
 			}
 		} else if costumer.y > cell.office.y {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
-				out := out + "U"
+				out = out + "U"
 			}
 
 		} else if costumer.x > cell.office.x {
 
 			for move.x <= cell.office.x {
-				out := out + "L"
+				out = out + "L"
 				(move.x)++
 			}
 
@@ -92,12 +92,12 @@ func findPath(costumer Costumer, cell Cell) string {
 
 				diff := cell.office.y - costumer.y
 				for diff > 0 {
-					out := out + "D"
+					out = out + "D"
 				}
 			} else if costumer.y > cell.office.y {
 				diff := cell.office.y - costumer.y
 				for diff > 0 {
-					out := out + "U"
+					out = out + "U"
 				}
 			}
 
@@ -107,12 +107,12 @@ func findPath(costumer Costumer, cell Cell) string {
 
 				diff := cell.office.y - costumer.y
 				for diff > 0 {
-					out := out + "D"
+					out = out + "D"
 				}
 			} else if costumer.y > cell.office.y {
 				diff := cell.office.y - costumer.y
 				for diff > 0 {
-					out := out + "U"
+					out = out + "U"
 				}
 			}
 		}
@@ -137,34 +137,34 @@ func searchCellofCostumer(costumer Costumer, cell [][]Cell, width int, height in
 		if posRow == 0 && posCol == 0 {
 
 			if cell[posRow+1][posCol].buildWeight < cell[posRow][posCol+1].buildWeight {
-				temp := cell[posRow+1][posCol]
+				temp = cell[posRow+1][posCol]
 			} else {
-				temp := cell[posRow][posCol+1]
+				temp = cell[posRow][posCol+1]
 			}
 			if temp.buildWeight > cell[posRow+1][posCol+1].buildWeight {
-				temp := cell[posRow+1][posCol+1]
+				temp = cell[posRow+1][posCol+1]
 			}
 
 		} else if posRow == 0 && posCol == width-1 {
 
 			if cell[posRow+1][posCol].buildWeight < cell[posRow][posCol-1].buildWeight {
-				temp := cell[posRow+1][posCol]
+				temp = cell[posRow+1][posCol]
 			} else {
-				temp := cell[posRow][posCol-1]
+				temp = cell[posRow][posCol-1]
 			}
 			if temp.buildWeight > cell[posRow+1][posCol-1].buildWeight {
-				temp := cell[posRow+1][posCol-1]
+				temp = cell[posRow+1][posCol-1]
 			}
 
 		} else if posRow == height-1 && posCol == 0 {
 
 			if cell[posRow-1][posCol].buildWeight < cell[posRow][posCol+1].buildWeight {
-				temp := cell[posRow-1][posCol]
+				temp = cell[posRow-1][posCol]
 			} else {
-				temp := cell[posRow][posCol+1]
+				temp = cell[posRow][posCol+1]
 			}
 			if temp.buildWeight > cell[posRow-1][posCol+1].buildWeight {
-				temp := cell[posRow-1][posCol+1]
+				temp = cell[posRow-1][posCol+1]
 			}
 
 		}
