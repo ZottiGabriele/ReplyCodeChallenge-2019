@@ -16,19 +16,98 @@ func main() {
 	//process input
 	fmt.Println("\n----- Processing input -----")
 	PointsTable := buildPointsTable()
+	fmt.Println(PointsTable['#'])
 
 	//dividere in celle
 	width, height := input.mappa.widht, input.mappa.height
+	var rapp int
+	if width > height {
+		rapp = width / height
+	} else {
+		rapp = height / width
+	}
+
 	count := 1
-	for ; count < input.mappa.n_max_office; count *= 2 {
-		if(width > height)
+	div := 2
+	for count < input.mappa.n_max_office {
+
+		width, height = input.mappa.widht, input.mappa.height
+		if width > height {
+			width /= div
+			height /= (div * rapp)
+		} else {
+			height /= div
+			width /= (div * rapp)
+		}
+		count = div * div * rapp
+		div++
+	}
+	div--
+
+	cells := [][]Cell{}
+	for i := 0; i < div; i++ {
+		row := make([]Cell, div)
+		cells = append(cells, row)
+	}
+
+	for i := 0; i < div; i++ {
+		for j := 0; j < div; j++ {
+			cells[i][j] = Cell{
+				start_x: (input.mappa.widht / div) * j,
+				start_y: (input.mappa.height / div) * i,
+			}
+			//compute width
+			if j == div-1 {
+				cells[i][j].width = input.mappa.widht/div + input.mappa.widht%div
+			} else {
+				cells[i][j].width = input.mappa.widht / div
+			}
+
+			if i == div-1 {
+				cells[i][j].height = input.mappa.height/div + input.mappa.height%div
+			} else {
+				cells[i][j].height = input.mappa.height / div
+			}
+		}
 	}
 
 	//calcolare indice di bontà iniziale
 	//calcolare indice di bontà path
+	for i := 0; i < len(cells); i++ {
+		for j := 0; j < len(cells); j++ {
+
+			buildWeight := 0
+			pathWeight := 0
+
+			for v := 0; v < cells[i][j].height; v++ {
+				for w := 0; w < cells[i][j].width; w++ {
+					current := input.mappa.raw[v+i*(input.mappa.height/div)][w+j*(input.mappa.widht/div)]
+
+					if current == 'C' {
+						buildWeight++
+					} else {
+						pathWeight += PointsTable[current]
+					}
+				}
+			}
+
+			cells[i][j].buildWeight = buildWeight
+			cells[i][j].pathWeight = pathWeight
+		}
+	}
+
+	for i := 0; i < len(cells); i++ {
+		fmt.Println(cells[i])
+	}
 
 	//generare x punti casuauli all'interno delle celle con indice di bontà minore
+
 	//scegliere il migliore
+	orderedCells := cells
+
+	fmt.Printf("\n\n%p %p\n\n", orderedCells, cells)
+
+	type ByBuildWeigth [][]Cell
 
 	//connetterli
 
@@ -51,8 +130,8 @@ func checkArgs() (string, string) {
 	return args[0], args[1]
 }
 
-func buildPointsTable() map[byte]int32 {
-	out := make(map[byte]int32)
+func buildPointsTable() map[byte]int {
+	out := make(map[byte]int)
 	out['~'] = 80
 	out['*'] = 20
 	out['+'] = 15
@@ -62,6 +141,6 @@ func buildPointsTable() map[byte]int32 {
 	out['T'] = 5
 
 	out['C'] = 0
-	out['#'] = 200
+	out['#'] = 250
 	return out
 }
