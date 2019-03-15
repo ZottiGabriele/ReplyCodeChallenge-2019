@@ -34,7 +34,7 @@ func main() {
 
 	//write output
 	fmt.Println("\n----- Writing output -----")
-	//writeOutput( output )
+	//writeOutput(output)
 
 	fmt.Println()
 }
