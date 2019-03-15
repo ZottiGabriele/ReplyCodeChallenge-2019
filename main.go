@@ -7,7 +7,7 @@ import (
 
 func main() {
 	fmt.Println()
-	input, output := checkArgs()
+	input, _ := checkArgs()
 
 	//parse input
 	fmt.Println("----- Parsing input -----")
@@ -18,7 +18,7 @@ func main() {
 
 	//write output
 	fmt.Println("\n----- Writing output -----")
-	writeOutput(output)
+	//writeOutput(output)
 
 	fmt.Println()
 }

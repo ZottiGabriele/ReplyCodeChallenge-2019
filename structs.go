@@ -21,3 +21,8 @@ type Path struct {
 	directions string
 	points     int
 }
+
+type Input struct {
+	mappa     Mappa
+	costumers []Costumer
+}
