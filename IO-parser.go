@@ -8,7 +8,6 @@ import (
 func parseInput(filePath string) Input {
 	file, err := os.Open(filePath)
 	check(err)
-	//fmt.Println(file, err) //DELETE AFTER ARGUMENTS USAGE
 
 	_mappa := Mappa{0, 0, 0, 0, [][]byte{}}
 
@@ -70,21 +69,10 @@ func writeOutput(paths []Path, outPath string) {
 	out, err := os.Create(outPath)
 	check(err)
 
-	//out.WriteString(fmt.Sprintf("Hello World!")) //DELETE AFTER ARGUMENTS USAGE
-
 	for i := 0; i < len(paths); i++ {
-		out.WriteString(fmt.Sprintf("%d %d %s\n", paths[i].start_x, paths[i].start_y, &paths[i].directions))
+		out.WriteString(fmt.Sprintf("%d %d %s\n", paths[i].start_x, paths[i].start_y, paths[i].directions))
 	}
-
-	// out.WriteString(fmt.Sprintf("%d\n", slideShow.n_of_slides))
-	// for _, slide := range slideShow.slides {
-	// 	for _, photo := range slide.photos {
-	// 		out.WriteString(fmt.Sprintf("%d ", photo.ID))
-	// 	}
-	// 	out.WriteString(fmt.Sprintf("\n"))
-	// }
 
 	err = out.Close()
 	check(err)
-
 }

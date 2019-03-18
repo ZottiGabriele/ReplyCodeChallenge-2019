@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func check(err error) {
 	if err != nil {
 		panic(err)
@@ -74,46 +76,52 @@ func findPath(costumer Costumer, cell Cell) string {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
 				out = out + "D"
+				diff--
 			}
 		} else if costumer.y > cell.office.y {
 			diff := cell.office.y - costumer.y
 			for diff > 0 {
 				out = out + "U"
+				diff--
 			}
+		}
 
-		} else if costumer.x > cell.office.x {
+	} else if costumer.x > cell.office.x {
 
-			for move.x <= cell.office.x {
-				out = out + "L"
-				(move.x)++
+		for move.x <= cell.office.x {
+			out = out + "L"
+			(move.x)++
+		}
+
+		if costumer.y < cell.office.y {
+
+			diff := cell.office.y - costumer.y
+			for diff > 0 {
+				out = out + "D"
+				diff--
 			}
-
-			if costumer.y < cell.office.y {
-
-				diff := cell.office.y - costumer.y
-				for diff > 0 {
-					out = out + "D"
-				}
-			} else if costumer.y > cell.office.y {
-				diff := cell.office.y - costumer.y
-				for diff > 0 {
-					out = out + "U"
-				}
+		} else if costumer.y > cell.office.y {
+			diff := cell.office.y - costumer.y
+			for diff > 0 {
+				out = out + "U"
+				diff--
 			}
+		}
 
-		} else {
+	} else {
 
-			if costumer.y < cell.office.y {
+		if costumer.y < cell.office.y {
 
-				diff := cell.office.y - costumer.y
-				for diff > 0 {
-					out = out + "D"
-				}
-			} else if costumer.y > cell.office.y {
-				diff := cell.office.y - costumer.y
-				for diff > 0 {
-					out = out + "U"
-				}
+			diff := cell.office.y - costumer.y
+			for diff > 0 {
+				out = out + "D"
+				diff--
+			}
+		} else if costumer.y > cell.office.y {
+			diff := cell.office.y - costumer.y
+			for diff > 0 {
+				out = out + "U"
+				diff--
 			}
 		}
 	}
@@ -127,7 +135,13 @@ func searchCellofCostumer(costumer Costumer, cell [][]Cell, width int, height in
 	var temp Cell
 
 	posCol = (costumer.x / cell[0][0].width)
+	if posCol > len(cell) {
+		posCol--
+	}
 	posRow = (costumer.y / cell[0][0].height)
+	if posRow > len(cell) {
+		posRow--
+	}
 
 	if cell[posRow][posCol].office.x != -1 && cell[posRow][posCol].office.y != -1 {
 		return costumer, cell[posRow][posCol]
@@ -176,17 +190,18 @@ func searchCellofCostumer(costumer Costumer, cell [][]Cell, width int, height in
 
 func magic(input Input, cell [][]Cell) []Path {
 
-	var arrPath []Path
+	arrPath := make([]Path, len(input.costumers))
 
 	width := input.mappa.widht
 	height := input.mappa.height
 
 	for i, costumer := range input.costumers {
-
+		fmt.Println("Processing", i, costumer)
 		var out Path
 		out.start_x = costumer.x
 		out.start_y = costumer.y
 
+		//fmt.Println("Searching cell for ", costumer)
 		mycostumer, my_cell := searchCellofCostumer(costumer, cell, width, height)
 		out.directions = findPath(mycostumer, my_cell)
 
